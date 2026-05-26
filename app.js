@@ -170,11 +170,11 @@ async function copyMarkdown() {
 }
 
 function aiUrl(markdown) {
-  const text = encodeURIComponent(markdown);
+  const text = encodeURIComponent(markdown.slice(0, 1800));
   const urls = {
-    chatgpt: `https://chatgpt.com/?q=${text}`,
-    claude: `https://claude.ai/new?q=${text}`,
-    gemini: `https://gemini.google.com/app?text=${text}`,
+    chatgpt: "https://chatgpt.com/",
+    claude: "https://claude.ai/new",
+    gemini: "https://gemini.google.com/app",
     perplexity: `https://www.perplexity.ai/search/new?q=${text}`
   };
   if (aiSelect.value === "custom") {
@@ -197,7 +197,7 @@ async function sendToAi() {
     return;
   }
   window.open(url, "_blank", "noopener,noreferrer");
-  setStatus("Markdown\u3092\u30b3\u30d4\u30fc\u3057\u3066AI\u3092\u958b\u304d\u307e\u3057\u305f");
+  setStatus("Markdown copied. Paste it into the opened AI chat.");
 }
 
 function download(filename, type, content) {
