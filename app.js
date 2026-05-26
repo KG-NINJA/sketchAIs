@@ -3,10 +3,17 @@ const ctx = canvas.getContext("2d", { willReadFrequently: false });
 const colorInput = document.getElementById("colorInput");
 const sizeInput = document.getElementById("sizeInput");
 const eraserBtn = document.getElementById("eraserBtn");
+const specModeBtn = document.getElementById("specModeBtn");
 const undoBtn = document.getElementById("undoBtn");
 const clearBtn = document.getElementById("clearBtn");
 const refreshBtn = document.getElementById("refreshBtn");
 const promptInput = document.getElementById("promptInput");
+const specPanel = document.getElementById("specPanel");
+const loadAgentTemplateBtn = document.getElementById("loadAgentTemplateBtn");
+const problemInput = document.getElementById("problemInput");
+const structureInput = document.getElementById("structureInput");
+const flowInput = document.getElementById("flowInput");
+const statesInput = document.getElementById("statesInput");
 const aiSelect = document.getElementById("aiSelect");
 const customUrlField = document.getElementById("customUrlField");
 const customUrlInput = document.getElementById("customUrlInput");
@@ -94,6 +101,10 @@ function setStatus(text) {
 function markdownPayload() {
   const png = canvas.toDataURL("image/png");
   const prompt = promptInput.value.trim();
+  const problem = problemInput.value.trim();
+  const structure = structureInput.value.trim();
+  const flow = flowInput.value.trim();
+  const states = statesInput.value.trim();
   const strokeData = JSON.stringify({
     createdAt: new Date().toISOString(),
     canvas: {
@@ -108,6 +119,23 @@ function markdownPayload() {
     "## Request",
     prompt || "\u3053\u306e\u30b9\u30b1\u30c3\u30c1\u3092\u5206\u6790\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
     "",
+    "## Machine Readable Spec",
+    "",
+    "### Problem / KPI",
+    problem || "UNKNOWN",
+    "",
+    "### Structure IDs",
+    blockListToTable(structure, ["ID", "Region / Purpose"]),
+    "",
+    "### Flow",
+    blockListToTable(flow, ["ID", "Step"]),
+    "",
+    "### States",
+    blockListToTable(states, ["State", "Meaning"]),
+    "",
+    "## Codex Extraction Prompt",
+    "Read the image and structured notes. Return detected layout regions, unreadable labels, likely intended labels, interaction flow, missing states, normalized UI spec, and React component breakdown. Do not guess silently. Mark uncertain items as UNKNOWN.",
+    "",
     "## Image",
     `![sketch](${png})`,
     "",
@@ -116,6 +144,18 @@ function markdownPayload() {
     strokeData,
     "```"
   ].join("\n");
+}
+
+function blockListToTable(text, headers) {
+  const rows = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  if (!rows.length) return "UNKNOWN";
+  const body = rows.map((line) => {
+    const parts = line.split(":");
+    const first = parts.shift()?.trim() || "UNKNOWN";
+    const rest = parts.join(":").trim() || "UNKNOWN";
+    return `| ${first} | ${rest} |`;
+  });
+  return [`| ${headers[0]} | ${headers[1]} |`, "|---|---|", ...body].join("\n");
 }
 
 function updateMarkdown() {
@@ -206,6 +246,19 @@ eraserBtn.addEventListener("click", () => {
   eraserBtn.setAttribute("aria-pressed", String(erasing));
 });
 
+specModeBtn.addEventListener("click", () => {
+  const hidden = specPanel.classList.toggle("hidden");
+  specModeBtn.setAttribute("aria-pressed", String(!hidden));
+});
+
+loadAgentTemplateBtn.addEventListener("click", () => {
+  problemInput.value = "User Problem: Agents are difficult to monitor and debug.\nDesired Outcome: Understand agent state in under 5 seconds.\nPrimary KPI: Time-to-understand < 5 sec";
+  structureInput.value = "A1: Status Header\nB1: Agent List\nC1: Current Task Panel\nD1: Timeline\nE1: Blockers Panel\nF1: Action Bar";
+  flowInput.value = "ACT-1: User opens dashboard.\nAGENT-1: System ranks risky agents first.\nSTATE-1: Selected agent shows current task.\nERR-1: Blockers panel shows required action.";
+  statesInput.value = "Running: Green, active work.\nWaiting: Yellow, needs input/tool/payment.\nFailed: Red, error occurred.\nIdle: Gray, no active task.\nReviewing: Blue, checking output.";
+  updateMarkdown();
+});
+
 undoBtn.addEventListener("click", () => {
   strokes.pop();
   redraw();
@@ -218,6 +271,9 @@ clearBtn.addEventListener("click", () => {
 
 refreshBtn.addEventListener("click", updateMarkdown);
 promptInput.addEventListener("input", updateMarkdown);
+[problemInput, structureInput, flowInput, statesInput].forEach((input) => {
+  input.addEventListener("input", updateMarkdown);
+});
 aiSelect.addEventListener("change", () => {
   customUrlField.classList.toggle("hidden", aiSelect.value !== "custom");
 });

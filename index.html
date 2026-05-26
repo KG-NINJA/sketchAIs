@@ -32,6 +32,7 @@
           <input id="sizeInput" type="range" min="2" max="40" value="7">
         </label>
         <button id="eraserBtn" class="tool-btn" type="button" aria-pressed="false">&#28040;&#12375;&#12468;&#12512;</button>
+        <button id="specModeBtn" class="tool-btn" type="button" aria-pressed="true">Spec Mode</button>
       </div>
 
       <div class="canvas-wrap">
@@ -49,6 +50,43 @@
         <span>&#20381;&#38972;&#25991;</span>
         <textarea id="promptInput" rows="4">&#12371;&#12398;&#12473;&#12465;&#12483;&#12481;&#12434;&#35501;&#12415;&#21462;&#12426;&#12289;&#24847;&#22259;&#12539;&#27083;&#22259;&#12539;&#25913;&#21892;&#26696;&#12434;&#26085;&#26412;&#35486;&#12391;&#25972;&#29702;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</textarea>
       </label>
+
+      <section id="specPanel" class="spec-panel" aria-label="spec mode">
+        <div class="panel-head">
+          <h2>Spec Mode</h2>
+          <button id="loadAgentTemplateBtn" type="button">Agent Template</button>
+        </div>
+        <label class="field">
+          <span>Problem / KPI</span>
+          <textarea id="problemInput" rows="3">User Problem: Agents are difficult to monitor and debug.
+Desired Outcome: Understand agent state in under 5 seconds.
+Primary KPI: Time-to-understand &lt; 5 sec</textarea>
+        </label>
+        <label class="field">
+          <span>Structure IDs</span>
+          <textarea id="structureInput" rows="4">A1: Status Header
+B1: Agent List
+C1: Current Task Panel
+D1: Timeline
+E1: Blockers Panel
+F1: Action Bar</textarea>
+        </label>
+        <label class="field">
+          <span>Flow</span>
+          <textarea id="flowInput" rows="4">ACT-1: User opens dashboard.
+AGENT-1: System ranks risky agents first.
+STATE-1: Selected agent shows current task.
+ERR-1: Blockers panel shows required action.</textarea>
+        </label>
+        <label class="field">
+          <span>States</span>
+          <textarea id="statesInput" rows="4">Running: Green, active work.
+Waiting: Yellow, needs input/tool/payment.
+Failed: Red, error occurred.
+Idle: Gray, no active task.
+Reviewing: Blue, checking output.</textarea>
+        </label>
+      </section>
 
       <label class="field">
         <span>&#36865;&#20449;&#20808;</span>

@@ -139,6 +139,8 @@ canvas {
   gap: 14px;
   padding: 16px;
   min-width: 0;
+  max-height: calc(100vh - 36px);
+  overflow: auto;
 }
 
 .panel-head { justify-content: space-between; }
@@ -195,6 +197,24 @@ textarea {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #f9fafb;
+}
+
+.spec-panel {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.spec-panel textarea {
+  min-height: 84px;
+  font-size: 13px;
+}
+
+.spec-panel.hidden {
+  display: none;
 }
 
 .agent-box code {
