@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <title>Sketch to AI</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="workspace" aria-label="drawing app">
+      <header class="topbar">
+        <div>
+          <h1>Sketch to AI</h1>
+          <p>&#25551;&#12356;&#12383;&#32117;&#12434;Markdown&#21270;&#12375;&#12390;AI&#12408;&#28193;&#12377;</p>
+        </div>
+        <div class="actions">
+          <button id="undoBtn" class="icon-btn" type="button" title="Undo" aria-label="Undo">&larr;</button>
+          <button id="clearBtn" class="icon-btn danger" type="button" title="Clear" aria-label="Clear">&times;</button>
+        </div>
+      </header>
+
+      <div class="toolrow" aria-label="drawing tools">
+        <label class="swatch">
+          <span>&#33394;</span>
+          <input id="colorInput" type="color" value="#111827">
+        </label>
+        <label class="range">
+          <span>&#22826;&#12373;</span>
+          <input id="sizeInput" type="range" min="2" max="40" value="7">
+        </label>
+        <button id="eraserBtn" class="tool-btn" type="button" aria-pressed="false">&#28040;&#12375;&#12468;&#12512;</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="drawCanvas" aria-label="drawing canvas"></canvas>
+      </div>
+    </section>
+
+    <aside class="exporter" aria-label="export panel">
+      <div class="panel-head">
+        <h2>AI&#12408;&#28193;&#12377;</h2>
+        <button id="refreshBtn" type="button">&#26356;&#26032;</button>
+      </div>
+
+      <label class="field">
+        <span>&#20381;&#38972;&#25991;</span>
+        <textarea id="promptInput" rows="4">&#12371;&#12398;&#12473;&#12465;&#12483;&#12481;&#12434;&#35501;&#12415;&#21462;&#12426;&#12289;&#24847;&#22259;&#12539;&#27083;&#22259;&#12539;&#25913;&#21892;&#26696;&#12434;&#26085;&#26412;&#35486;&#12391;&#25972;&#29702;&#12375;&#12390;&#12367;&#12384;&#12373;&#12356;&#12290;</textarea>
+      </label>
+
+      <label class="field">
+        <span>&#36865;&#20449;&#20808;</span>
+        <select id="aiSelect">
+          <option value="chatgpt">ChatGPT</option>
+          <option value="claude">Claude</option>
+          <option value="gemini">Gemini</option>
+          <option value="perplexity">Perplexity</option>
+          <option value="custom">&#12459;&#12473;&#12479;&#12512;URL</option>
+        </select>
+      </label>
+
+      <label id="customUrlField" class="field hidden">
+        <span>&#12459;&#12473;&#12479;&#12512;URL</span>
+        <input id="customUrlInput" type="url" placeholder="https://example.com/?q={text}">
+      </label>
+
+      <div class="send-row">
+        <button id="sendBtn" class="primary" type="button">AI&#12391;&#38283;&#12367;</button>
+        <button id="copyBtn" type="button">Markdown&#12467;&#12500;&#12540;</button>
+      </div>
+
+      <label class="field">
+        <span>Markdown</span>
+        <textarea id="markdownOutput" class="output" rows="12" readonly></textarea>
+      </label>
+
+      <div class="send-row">
+        <button id="downloadPngBtn" type="button">PNG&#20445;&#23384;</button>
+        <button id="downloadMdBtn" type="button">MD&#20445;&#23384;</button>
+      </div>
+      <div class="agent-box">
+        <h3>Agent API</h3>
+        <p>x402: 10 min / 0.001 USDC (planned)</p>
+        <code id="agentApiUrl">/openapi.json</code>
+        <button id="copyAgentUrlBtn" type="button">API URL&#12467;&#12500;&#12540;</button>
+      </div>
+      <p id="status" class="status" role="status"></p>
+    </aside>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
